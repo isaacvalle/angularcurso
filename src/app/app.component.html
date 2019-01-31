@@ -6,18 +6,29 @@
     <div class="collapse navbar-collapse" id="menu">
       <ul class="nav navbar-nav mr-auto">
         <li>
-          <a class="nav-link" href="">Inicio</a>
+          <a class="nav-link" [routerLink]="['']">Inicio</a>
         </li>
         <li>
           <a class="nav-link" href="">Crear coche</a>
         </li>
       </ul>
-      <ul class="nav navbar-nav float-sm-right">
+      <ul class="nav navbar-nav float-sm-right" *ngIf="!identity">
         <li>
-          <a class="nav-link" href="">Idetifícate</a>
+          <a class="nav-link" [routerLink]="['/login']">Idetifícate</a>
         </li>
         <li>
-          <a class="nav-link" href="">Registro</a>
+          <a class="nav-link" [routerLink]="['/register']">Registro</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav float-sm-right" *ngIf="identity">
+        <li>
+          <a class="nav-link" href="#">{{identity.name + ' ' + identity.surname}}</a>
+        </li>
+        <li>
+          <a class="nav-link" [routerLink]="['logout', 1]">
+            <i class="fas fa-sign-out-alt"></i>
+            Salir
+          </a>
         </li>
       </ul>
     </div>
