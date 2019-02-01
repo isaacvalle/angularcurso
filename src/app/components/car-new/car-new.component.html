@@ -1,0 +1,35 @@
+<div class="col-md-12">
+  <h2>{{pageTitle}}</h2>
+  <div class="alert alert-success" *ngIf="statusCar == 'success'">
+    Carro creado con éxito.
+  </div>
+  <div class="alert alert-danger" *ngIf="statusCar == 'error'">
+    Error al crear el carro.
+  </div>
+  <form #carNew="ngForm" (ngSubmit)="onSubmit(carNew);" class="col-md-5">
+    <p>
+      <label for="title">Título</label>
+      <input type="text" name="title" #title="ngModel" [(ngModel)]="car.title" class="form-control" required>
+      <span *ngIf="!title.valid && title.touched">Campo incorrecto.</span>
+    </p>
+    <p>
+      <label for="description">Descripción</label>
+      <textarea name="description" #description="ngModel" [(ngModel)]="car.description" class="form-control" required></textarea>
+      <span *ngIf="!description.valid && description.touched">Campo incorrecto.</span>
+    </p>
+    <p>
+      <label for="price">Precio</label>
+      <input type="text" name="price" #price="ngModel" [(ngModel)]="car.price" class="form-control" required>
+      <span *ngIf="!price.valid && price.touched">Precio no válido.</span>
+    </p>
+    <p>
+      <label for="status">¿A la venta?</label>
+      <select class="form-control" name="status" #status="ngModel" [(ngModel)]="car.status" required>
+        <option value="true" selected="selected">Sí</option>
+        <option value="false">No</option>
+      </select>
+    </p>
+
+    <input type="submit" value="Guardar" class="btn btn-success" [disabled]="!carNew.form.valid">
+  </form>
+</div>

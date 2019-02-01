@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { UserService } from "./services/user.service";
 
 @Component({
@@ -7,7 +7,7 @@ import { UserService } from "./services/user.service";
   styleUrls: ['./app.component.scss'],
   providers: [UserService]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, DoCheck{
   title = 'client-angular';
   public identity:any;
   public token:any;
@@ -24,5 +24,10 @@ export class AppComponent implements OnInit{
     }else {
       console.log("no existe identity")
     }
+  }
+
+  ngDoCheck() {
+    this.identity = this._userServ.getIdentity();
+    this.token = this._userServ.getToken();
   }
 }

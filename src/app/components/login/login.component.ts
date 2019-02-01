@@ -13,11 +13,11 @@ export class LoginComponent implements OnInit{
   public user:User;
   public token:any;
   public identity:any;
+  public status:string;
 
   constructor(private _route:ActivatedRoute,
               private _router: Router,
-              private _userServ: UserService
-            ) {
+              private _userServ: UserService) {
     this.title = "identifícate";
     this.user = new User(1, 'ROLE_USER', '', '', '', '');
   }
@@ -25,26 +25,32 @@ export class LoginComponent implements OnInit{
   ngOnInit() {
     // console.log("Login.Component cargado correctamente!")
     this.logOut();
-    console.log("vete a chingar a tu perra madre")
   }
 
   onSubmit(form) {
     console.log(this.user)
     this._userServ.signUp(this.user).subscribe(
       response => {
-        //token
-        this.token = response;
-        localStorage.setItem('token', JSON.stringify(this.token));
-        //conseguir objeto de usuario identidicado
-        this._userServ.signUp(this.user, true).subscribe(
-          response => {
-            this.identity = response;
-            localStorage.setItem('identity', JSON.stringify(this.identity));
-          },
-          error => {
-            console.log(<any>error)
-          }
-        );
+        if(response.status != 'error') {
+          this.status = 'success';
+          //token
+          this.token = response;
+          localStorage.setItem('token', this.token);
+          //conseguir objeto de usuario identidicado
+          this._userServ.signUp(this.user, true).subscribe(
+            response => {
+              this.identity = response;
+              localStorage.setItem('identity', JSON.stringify(this.identity));
+              //Redireccion del componente LOGIN
+              this._router.navigate(['inicio'])
+            },
+            error => {
+              console.log(<any>error)
+            }
+          );
+        }else {
+          this.status = 'error';
+        }
       },
       error => {
         console.log(<any>error)
@@ -53,10 +59,8 @@ export class LoginComponent implements OnInit{
   }
 
   logOut() {
-    console.log("hola")
     this._route.params.subscribe(params => {
-      console.log(params)
-      let logOut = Number(params['sure']);
+      let logOut = +params['sure'];
       if(logOut == 1) {
         localStorage.removeItem('identity');
         localStorage.removeItem('token');

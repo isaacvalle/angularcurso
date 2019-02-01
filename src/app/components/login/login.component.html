@@ -1,6 +1,11 @@
 <div class="col-md-12">
   <h1>{{title}}</h1>
-
+  <div class="alert alert-success" *ngIf="status == 'success'">
+    Identificación exitosa.
+  </div>
+  <div class="alert alert-danger" *ngIf="status == 'error'">
+    Error en la identificación.
+  </div>
   <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm);" class="col-md-5">
     <p>
       <label for="email">Email</label>
